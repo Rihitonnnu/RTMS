@@ -1,1 +1,1 @@
-# Laravel で自作の認証システム
+# Laravel で自作認証
