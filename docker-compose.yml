@@ -2,33 +2,19 @@ version: '3.9'
 
 services:
   app:
-    build: ./docker/app
-    volumes:
-      - ./src:/app
-
-  web:
-    image: nginx:latest
+    build:
+      context: ./docker/app
     ports:
-      - 8080:80
+      - '80:80'
+      - '5173:5173'
     volumes:
-      - ./src/:/app
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-    working_dir: /app
+      - ./src/:/var/www/html
+      - ./docker/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
 
   db:
-    build:
-      context: .
-      dockerfile: ./docker/db/Dockerfile
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: authenticate
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root
-      TZ: 'Asia/Tokyo'
+    build: ./docker/db
     volumes:
-      - mysql-volume:/var/lib/mysql
+      - db-store:/var/lib/mysql
 
 volumes:
-  mysql-volume:
+  db-store:
