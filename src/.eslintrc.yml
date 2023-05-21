@@ -3,11 +3,32 @@ env:
   es2021: true
 extends:
   - plugin:react/recommended
-  - standard-with-typescript
-overrides: []
+  - plugin:react-hooks/recommended
+  - airbnb
+  - airbnb-typescript
+  - prettier
+parser: '@typescript-eslint/parser'
 parserOptions:
+  project: ./tsconfig.json
+  ecmaFeatures:
+    jsx: true
   ecmaVersion: latest
   sourceType: module
 plugins:
   - react
-rules: {}
+  - '@typescript-eslint'
+rules:
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: warn
+  react/react-in-jsx-scope: off
+  import/prefer-default-export: off
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies: true
+      optionalDependencies: false
+  semi:
+    - error
+    - always
+settings:
+  import/resolver:
+    typescript: true
