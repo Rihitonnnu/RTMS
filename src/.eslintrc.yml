@@ -21,6 +21,12 @@ rules:
   react-hooks/exhaustive-deps: warn
   react/react-in-jsx-scope: off
   import/prefer-default-export: off
+  import/extensions:
+    - error
+    - ignorePackages:
+      jsx: never
+      ts: never
+      tsx: never
   import/no-extraneous-dependencies:
     - error
     - devDependencies: true
