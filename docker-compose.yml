@@ -12,6 +12,7 @@ services:
       - ./docker/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
 
   db:
+    container_name: rtms-db
     build: ./docker/db
     volumes:
       - db-store:/var/lib/mysql
