@@ -22,6 +22,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'time_id',
+        'rest_id',
+        'is_started',
+        'is_rested',
     ];
 
     /**
@@ -47,5 +51,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function times()
     {
         return $this->hasMany(Time::class);
+    }
+
+    /**
+     * 現在記録中のtimesに紐付ける
+     *
+     * @return void
+     */
+    public function currentTime()
+    {
+        return $this->hasOne('App\Models\Time', 'id', 'time_id');
+    }
+
+    /**
+     * 現在記録中のrestsに紐付ける
+     *
+     * @return void
+     */
+    public function currentRest()
+    {
+        return $this->hasOne('App\Models\Rest', 'id', 'rest_id');
     }
 }

@@ -9,7 +9,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\TimeController;
+use App\Http\Controllers\RestTimeController;
+use App\Http\Controllers\ResearchTimeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -58,5 +59,11 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::post('times/start', [TimeController::class, 'storeStartTime'])->name('times.storeStartTime');
+    // 研究開始・終了時間の打刻処理
+    Route::post('times/start', [ResearchTimeController::class, 'storeStartTime'])->name('research.storeStartTime');
+    Route::post('times/end', [ResearchTimeController::class, 'storeEndTime'])->name('research.storeEndTime');
+
+    // 休憩開始・終了時間の打刻処理
+    Route::post('rests/start', [RestTimeController::class, 'storeStartTime'])->name('rest.storeStartTime');
+    Route::post('rests/end', [RestTimeController::class, 'storeEndTime'])->name('rest.storeEndTime');
 });

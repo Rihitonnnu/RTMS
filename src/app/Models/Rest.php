@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class Time extends Model
+class Rest extends Model
 {
     use HasFactory;
 
@@ -18,14 +18,14 @@ class Time extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'time_id',
         'start_time',
         'end_time',
     ];
 
-    public function user()
+    public function time()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Time::class);
     }
 
     /**
@@ -34,21 +34,21 @@ class Time extends Model
      * @param integer $userId
      * @return boolean
      */
-    public function storeTime(int $userId)
+    public function storeTime(int $timeId)
     {
         try {
             DB::beginTransaction();
-            $time = $this->create([
-                'user_id' => $userId,
+            $rest = $this->create([
+                'time_id' => $timeId,
                 'start_time' => Carbon::now()
             ]);
-            $user = User::find($userId);
+            $time = Time::find($timeId);
 
-            if ($user->is_started) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
+            if ($time->user->is_rested) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
                 DB::rollBack();
                 return false;
             }
-            $user->fill(['is_started' => true, 'time_id' => $time->id])->save();
+            $time->user->fill(['is_rested' => true, 'rest_id' => $rest->id])->save();
             DB::commit();
             return true;
         } catch (Throwable $e) {
@@ -62,14 +62,14 @@ class Time extends Model
      * @param integer $userId
      * @return boolean
      */
-    public function updateTime(int $userId)
+    public function updateTime(int $timeId)
     {
-        $user = User::find($userId);
-        if (!$user->is_started) {
+        $time = Time::find($timeId);
+        if (!$time->user->is_rested) {
             return false;
         }
         // ここもトランザクション加えたほうがいいかも
-        $user->currentTime->fill(['end_time' => Carbon::now()])->save();
-        return $user->fill(['is_started' => false])->save();
+        $time->user->currentRest->fill(['end_time' => Carbon::now()])->save();
+        return $time->user->fill(['is_rested' => false])->save();
     }
 }
