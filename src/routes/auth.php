@@ -9,8 +9,8 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\RestTimeController;
-use App\Http\Controllers\ResearchTimeController;
+use App\Http\Controllers\RestController;
+use App\Http\Controllers\ResearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -60,10 +60,10 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     // 研究開始・終了時間の打刻処理
-    Route::post('times/start', [ResearchTimeController::class, 'storeStartTime'])->name('research.storeStartTime');
-    Route::post('times/end', [ResearchTimeController::class, 'storeEndTime'])->name('research.storeEndTime');
+    Route::post('researches/start', [ResearchController::class, 'storeStartTime'])->name('research.storeStartTime');
+    Route::post('researches/end', [ResearchController::class, 'storeEndTime'])->name('research.storeEndTime');
 
     // 休憩開始・終了時間の打刻処理
-    Route::post('rests/start', [RestTimeController::class, 'storeStartTime'])->name('rest.storeStartTime');
-    Route::post('rests/end', [RestTimeController::class, 'storeEndTime'])->name('rest.storeEndTime');
+    Route::post('rests/start', [RestController::class, 'storeStartTime'])->name('rest.storeStartTime');
+    Route::post('rests/end', [RestController::class, 'storeEndTime'])->name('rest.storeEndTime');
 });

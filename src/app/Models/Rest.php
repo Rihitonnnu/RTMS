@@ -18,12 +18,12 @@ class Rest extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'time_id',
+        'research_id',
         'start_time',
         'end_time',
     ];
 
-    public function time()
+    public function research()
     {
         return $this->belongsTo(Time::class);
     }
@@ -31,24 +31,24 @@ class Rest extends Model
     /**
      * 開始時間を登録する
      *
-     * @param integer $userId
+     * @param integer $researchId
      * @return boolean
      */
-    public function storeTime(int $timeId)
+    public function storeTime(int $researchId)
     {
         try {
             DB::beginTransaction();
             $rest = $this->create([
-                'time_id' => $timeId,
+                'research_id' => $researchId,
                 'start_time' => Carbon::now()
             ]);
-            $time = Time::find($timeId);
+            $research = Research::find($researchId);
 
-            if ($time->user->is_rested) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
+            if ($research->user->is_rested) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
                 DB::rollBack();
                 return false;
             }
-            $time->user->fill(['is_rested' => true, 'rest_id' => $rest->id])->save();
+            $research->user->fill(['is_rested' => true, 'rest_id' => $rest->id])->save();
             DB::commit();
             return true;
         } catch (Throwable $e) {
@@ -59,17 +59,17 @@ class Rest extends Model
     /**
      * 終了時間を登録する
      *
-     * @param integer $userId
+     * @param integer $researchId
      * @return boolean
      */
-    public function updateTime(int $timeId)
+    public function updateTime(int $researchId)
     {
-        $time = Time::find($timeId);
-        if (!$time->user->is_rested) {
+        $research = Research::find($researchId);
+        if (!$research->user->is_rested) {
             return false;
         }
         // ここもトランザクション加えたほうがいいかも
-        $time->user->currentRest->fill(['end_time' => Carbon::now()])->save();
-        return $time->user->fill(['is_rested' => false])->save();
+        $research->user->currentRest->fill(['end_time' => Carbon::now()])->save();
+        return $research->user->fill(['is_rested' => false])->save();
     }
 }

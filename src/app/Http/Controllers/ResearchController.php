@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Research;
 use App\Models\Time;
 use Illuminate\Support\Facades\Auth;
 
-class ResearchTimeController extends Controller
+class ResearchController extends Controller
 {
     /**
      * @param Time $time
      */
-    public function __construct(Time $time)
+    public function __construct(Research $research)
     {
-        $this->time = $time;
+        $this->research = $research;
     }
 
     /**
@@ -23,7 +24,7 @@ class ResearchTimeController extends Controller
     public function storeStartTime()
     {
         $userId = Auth::id();
-        $result = $this->time->storeTime($userId);
+        $result = $this->research->storeTime($userId);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '研究開始時間を打刻しました');
         } else {
@@ -37,7 +38,7 @@ class ResearchTimeController extends Controller
     public function storeEndTime()
     {
         $userId = Auth::id();
-        $result = $this->time->updateTime($userId);
+        $result = $this->research->updateTime($userId);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '研究終了時間を打刻しました');
         } else {

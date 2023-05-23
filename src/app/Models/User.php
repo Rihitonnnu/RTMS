@@ -22,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
-        'time_id',
+        'research_id',
         'rest_id',
         'is_started',
         'is_rested',
@@ -48,7 +48,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function times()
+    public function researches()
     {
         return $this->hasMany(Time::class);
     }
@@ -58,9 +58,9 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return void
      */
-    public function currentTime()
+    public function currentResearch()
     {
-        return $this->hasOne('App\Models\Time', 'id', 'time_id');
+        return $this->hasOne('App\Models\Research', 'id', 'research_id');
     }
 
     /**

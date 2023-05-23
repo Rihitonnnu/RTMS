@@ -6,7 +6,7 @@ use App\Models\Rest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class RestTimeController extends Controller
+class RestController extends Controller
 {
     public function __construct(Rest $rest)
     {
@@ -16,10 +16,10 @@ class RestTimeController extends Controller
     public function storeStartTime()
     {
         $user = User::find(Auth::id());
-        if (is_null($user->currentTime)) {
+        if (is_null($user->currentResearch)) {
             return redirect('dashboard')->with('flash_error_message', '研究を開始してください');
         }
-        $result = $this->rest->storeTime($user->currentTime->id);
+        $result = $this->rest->storeTime($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩開始時間を打刻しました');
         } else {
@@ -33,7 +33,7 @@ class RestTimeController extends Controller
     public function storeEndTime()
     {
         $user = User::find(Auth::id());
-        $result = $this->rest->updateTime($user->currentTime->id);
+        $result = $this->rest->updateTime($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩終了時間を打刻しました');
         } else {

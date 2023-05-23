@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rests', function (Blueprint $table) {
+        Schema::create('researches', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('time_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
             $table->timestamps();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rests');
+        Schema::dropIfExists('researches');
     }
 };

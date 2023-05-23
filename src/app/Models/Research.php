@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-class Time extends Model
+class Research extends Model
 {
     use HasFactory;
+
+    protected $table = 'researches';
 
     /**
      * The attributes that are mass assignable.
@@ -38,7 +40,7 @@ class Time extends Model
     {
         try {
             DB::beginTransaction();
-            $time = $this->create([
+            $research = $this->create([
                 'user_id' => $userId,
                 'start_time' => Carbon::now()
             ]);
@@ -48,10 +50,12 @@ class Time extends Model
                 DB::rollBack();
                 return false;
             }
-            $user->fill(['is_started' => true, 'time_id' => $time->id])->save();
+            $user->fill(['is_started' => true, 'research_id' => $research->id])->save();
             DB::commit();
             return true;
         } catch (Throwable $e) {
+            dd($e);
+            // ログで出力してあげるようにする
             DB::rollBack();
         }
     }
@@ -69,7 +73,7 @@ class Time extends Model
             return false;
         }
         // ここもトランザクション加えたほうがいいかも
-        $user->currentTime->fill(['end_time' => Carbon::now()])->save();
+        $user->currentResearch->fill(['end_time' => Carbon::now()])->save();
         return $user->fill(['is_started' => false])->save();
     }
 }
