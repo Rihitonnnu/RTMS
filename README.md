@@ -14,6 +14,12 @@ git clone git@github.com:Rihitonnnu/RTMS.git
 docker compose up -d
 ```
 
+### src ディレクトリに移動
+
+```
+cd src/
+```
+
 ### env ファイルコピー
 
 ```
