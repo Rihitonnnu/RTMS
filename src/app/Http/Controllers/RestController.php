@@ -13,22 +13,27 @@ class RestController extends Controller
         $this->rest = $rest;
     }
 
+    /**
+     * 休憩開始時間を登録
+     *
+     * @return void
+     */
     public function storeStartTime()
     {
         $user = User::find(Auth::id());
-        if (is_null($user->currentResearch)) {
+        if (is_null($user->currentResearch)) { // 研究を開始せずに休憩を開始しようとした場合
             return redirect('dashboard')->with('flash_error_message', '研究を開始してください');
         }
         $result = $this->rest->storeTime($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩開始時間を打刻しました');
-        } else {
+        } else { // 休憩開始ボタンを2回連続で押した場合
             return redirect('dashboard')->with('flash_error_message', 'すでに開始しています');
         }
     }
 
     /**
-     * 終了時間を登録
+     * 休憩終了時間を登録
      */
     public function storeEndTime()
     {
@@ -36,7 +41,7 @@ class RestController extends Controller
         $result = $this->rest->updateTime($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩終了時間を打刻しました');
-        } else {
+        } else { // 休憩をまだ開始していない場合
             return redirect('dashboard')->with('flash_error_message', 'まだ開始していません');
         }
     }

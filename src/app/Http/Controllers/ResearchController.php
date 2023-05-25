@@ -28,7 +28,7 @@ class ResearchController extends Controller
         $result = $this->research->storeTime($userId);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '研究開始時間を打刻しました');
-        } else {
+        } else { // 研究開始ボタンを2回連続で押した場合は、すでに開始していることをエラーメッセージで表示
             return redirect('dashboard')->with('flash_error_message', 'すでに開始しています');
         }
     }
@@ -48,7 +48,7 @@ class ResearchController extends Controller
         $result = $this->research->updateTime($userId);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '研究終了時間を打刻しました');
-        } else {
+        } else { // 研究を開始せずに終了しようとした場合にエラーメッセージを表示
             return redirect('dashboard')->with('flash_error_message', 'まだ開始していません');
         }
     }
