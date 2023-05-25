@@ -38,6 +38,9 @@ class RestController extends Controller
     public function storeEndTime()
     {
         $user = User::find(Auth::id());
+        if (is_null($user->currentResearch)) { // 研究を開始せずに休憩を終了しようとした場合
+            return redirect('dashboard')->with('flash_error_message', '研究をまだ開始していません');
+        }
         $result = $this->rest->updateTime($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩終了時間を打刻しました');
