@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Research;
 use App\Models\Time;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ResearchController extends Controller
@@ -38,6 +39,12 @@ class ResearchController extends Controller
     public function storeEndTime()
     {
         $userId = Auth::id();
+        $user = User::find($userId);
+
+        // 休憩を終了せずに研究を終了した場合にエラーメッセージを表示
+        if (is_null($user->currentRest->end_time)) {
+            return redirect('dashboard')->with('flash_error_message', '休憩を終了してください');
+        }
         $result = $this->research->updateTime($userId);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '研究終了時間を打刻しました');
