@@ -40,21 +40,19 @@ class Research extends Model
     {
         try {
             DB::beginTransaction();
-            $research = $this->create([
-                'user_id' => $userId,
-                'start_time' => Carbon::now()
-            ]);
-            $user = User::find($userId);
+            DB::insert('insert into researches (user_id,start_time) values (?,?)', [$userId, Carbon::now()]);
 
-            if ($user->is_started) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
+            $user = DB::select('select * from users where id=?', [$userId]);
+            $research = DB::select('select id from researches where user_id=? order by id desc', [$userId])[0];
+
+            if ($user[0]->is_started) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
                 DB::rollBack();
                 return false;
             }
-            $user->fill(['is_started' => true, 'research_id' => $research->id])->save();
+            DB::update('update users set is_started=true,research_id=? where id=?', [$research->id, $userId]);
             DB::commit();
             return true;
         } catch (Throwable $e) {
-            dd($e);
             // ログで出力してあげるようにする
             DB::rollBack();
         }
@@ -68,12 +66,13 @@ class Research extends Model
      */
     public function updateTime(int $userId)
     {
-        $user = User::find($userId);
+        $user = Db::select('select is_started from users where id=?', [$userId])[0];
         if (!$user->is_started) {
             return false;
         }
-        // ここもトランザクション加えたほうがいいかも
-        $user->currentResearch->fill(['end_time' => Carbon::now()])->save();
-        return $user->fill(['is_started' => false])->save();
+
+        DB::update('update users set is_started=false where users.id=?', [$userId]);
+        DB::update('update researches set end_time=? where id=(select research_id from users where users.id=?)', [Carbon::now(), $userId]);
+        return true;
     }
 }
