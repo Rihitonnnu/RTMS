@@ -6,6 +6,7 @@ type TargetTimeType = {
     created_at: Date;
     updated_at: Date;
   };
+  weeklyTime: number;
 };
 export type TimeManagementProps = TargetTimeType;
 

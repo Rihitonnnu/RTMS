@@ -7,7 +7,7 @@ import type {
   TargetTimeEditProps
 } from '@/types/TimeManagement/TimeManagementType';
 
-function TargetTimeList({ targetTime }: TargetTimeEditProps) {
+function TargetTimeList({ targetTime, weeklyTime }: TargetTimeEditProps) {
   const { control, handleSubmit } = useForm<TargetTimeInputs>();
   const onTargetTimeSubmit: SubmitHandler<TargetTimeInputs> = (
     data: TargetTimeInputs
@@ -20,9 +20,16 @@ function TargetTimeList({ targetTime }: TargetTimeEditProps) {
       <div className="max-w-7xl w-2/3 mx-auto mt-10 sm:px-6 lg:px-8 flex justify-evenly items-center">
         {targetTime !== null && (
           <>
-            <p>{`今週の目標時間   ${targetTime?.time}時間`}</p>
-            <div>
-              <p>目標時間達成まであと　時間</p>
+            <div className="text-center">
+              <p>今週の目標時間</p>
+              <h1 className="font-bold text-2xl">{`${targetTime?.time}時間`}</h1>
+            </div>
+
+            <div className="text-center">
+              <p>目標達成まであと</p>
+              <h1 className="font-bold text-2xl">
+                {`${targetTime.time - weeklyTime}時間`}
+              </h1>
             </div>
           </>
         )}
@@ -49,7 +56,7 @@ function TargetTimeList({ targetTime }: TargetTimeEditProps) {
             </div>
           </div>
         ) : (
-          <div className="ml-3">
+          <div>
             <Button
               variant="contained"
               onClick={() =>
