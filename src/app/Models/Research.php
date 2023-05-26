@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Repositories\WeeklyTime\WeeklyTimeRepository;
+use App\Services\TimeBasedConversionService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +15,15 @@ class Research extends Model
     use HasFactory;
 
     protected $table = 'researches';
+
+    private $timeBasedConversionService;
+    private $weeklyTimeRepository;
+
+    public function __construct(TimeBasedConversionService $timeBasedConversionService, WeeklyTimeRepository $weeklyTimeRepository)
+    {
+        $this->timeBasedConversionService = $timeBasedConversionService;
+        $this->weeklyTimeRepository = $weeklyTimeRepository;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -66,13 +77,41 @@ class Research extends Model
      */
     public function updateTime(int $userId)
     {
-        $user = Db::select('select is_started from users where id=?', [$userId])[0];
-        if (!$user->is_started) {
-            return false;
-        }
+        try {
+            DB::beginTransaction();
 
-        DB::update('update users set is_started=false where users.id=?', [$userId]);
-        DB::update('update researches set end_time=? where id=(select research_id from users where users.id=?)', [Carbon::now(), $userId]);
-        return true;
+            $user = User::find($userId);
+            if (!$user->is_started) {
+                return false;
+            }
+
+            DB::update('update users set is_started=false where users.id=?', [$userId]);
+            $endTime = Carbon::now();
+            DB::update('update researches set end_time=? where id=(select research_id from users where users.id=?)', [$endTime, $userId]);
+
+            $startTime = new Carbon(Db::select('select start_time from researches where id=(select research_id from users where users.id=?)', [$userId])[0]->start_time);
+
+            // 時間の単位を(H)に変換し今週の研究時間に加算
+            $researchTime = $this->timeBasedConversionService->convertTimeToHour($startTime, $endTime);
+
+            //研究時間を登録・更新する処理　1週間に入っているのか新たに更新する必要があるのかどうかの分岐
+            // ここで前回登録していたweeklytimeを取得
+            $weekFirst = Carbon::today()->startOfWeek();
+            $weekLast = Carbon::today()->addWeek(1);
+            $createdWeeklyTime = new Carbon($user?->currentWeeklyTime?->created_at);
+
+            // 前回登録した週間研究時間が先週のものであれば新しく作成し、そうでなければ前回の週間研究時間を取得し、更新する
+            if (is_null($user?->currentWeeklyTime) || ($createdWeeklyTime->lt($weekFirst) || $createdWeeklyTime->gt($weekLast))) {
+                $this->weeklyTimeRepository->store($researchTime);
+            } else {
+                $weeklyTime = $user->currentWeeklyTime;
+                $this->weeklyTimeRepository->update($weeklyTime, $researchTime);
+            }
+
+            DB::commit();
+            return true;
+        } catch (Throwable $e) {
+            DB::rollBack();
+        }
     }
 }

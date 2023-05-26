@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'research_id',
         'rest_id',
+        'weekly_time_id',
         'is_started',
         'is_rested',
     ];
@@ -53,6 +54,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Time::class);
     }
 
+    public function weeklyTime()
+    {
+        return $this->hasOne(weeklyTime::class);
+    }
+
     /**
      * 現在記録中のtimesに紐付ける
      *
@@ -71,5 +77,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function currentRest()
     {
         return $this->hasOne('App\Models\Rest', 'id', 'rest_id');
+    }
+
+    /**
+     * 今週の週間研究時間を紐付ける
+     *
+     * @return void
+     */
+    public function currentWeeklyTime()
+    {
+        return $this->hasOne('App\Models\WeeklyTime', 'id', 'weekly_time_id');
     }
 }
