@@ -43,7 +43,7 @@ class ResearchController extends Controller
         $user = User::find($userId);
 
         // 休憩を終了せずに研究を終了した場合にエラーメッセージを表示
-        if (is_null($user->currentRest->end_time)) {
+        if ($user->is_rested) {
             return redirect('dashboard')->with('flash_error_message', '休憩を終了してください');
         }
         $result = $this->research->updateTime($userId);
