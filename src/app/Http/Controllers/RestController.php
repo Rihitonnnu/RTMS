@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rest;
 use App\Models\User;
+use App\Services\RestService;
 use Illuminate\Support\Facades\Auth;
 
 class RestController extends Controller
 {
-    private $rest;
+    private $restService;
 
-    public function __construct(Rest $rest)
+    public function __construct(RestService $restService)
     {
-        $this->rest = $rest;
+        $this->restService = $restService;
     }
 
     /**
@@ -23,10 +23,10 @@ class RestController extends Controller
     public function storeStartTime()
     {
         $user = User::find(Auth::id());
-        if (is_null($user->currentResearch)) { // 研究を開始せずに休憩を開始しようとした場合
+        if ((!$user->is_started)) { // 研究を開始せずに休憩を開始しようとした場合
             return redirect('dashboard')->with('flash_error_message', '研究を開始してください');
         }
-        $result = $this->rest->storeTime($user->currentResearch->id);
+        $result = $this->restService->store($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩開始時間を打刻しました');
         } else { // 休憩開始ボタンを2回連続で押した場合
@@ -43,7 +43,7 @@ class RestController extends Controller
         if (is_null($user->currentResearch)) { // 研究を開始せずに休憩を終了しようとした場合
             return redirect('dashboard')->with('flash_error_message', '研究をまだ開始していません');
         }
-        $result = $this->rest->updateTime($user->currentResearch->id);
+        $result = $this->restService->update($user->currentResearch->id);
         if ($result) {
             return redirect('dashboard')->with('flash_message', '休憩終了時間を打刻しました');
         } else { // 休憩をまだ開始していない場合

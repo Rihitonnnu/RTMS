@@ -66,7 +66,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function currentResearch()
     {
-        return $this->hasOne('App\Models\Research', 'id', 'research_id');
+        return $this->hasOne(Research::class, 'id', 'research_id');
     }
 
     /**

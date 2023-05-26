@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $targetTime = TargetTime::where('user_id', $userId)->first();
 
         // 今週の研究時間を取得
-        $weeklyTime = WeeklyTime::where('user_id', $userId)->first()->research_time;
+        $weeklyTime = WeeklyTime::where('user_id', $userId)?->first()?->research_time;
 
         return Inertia::render('Dashboard', compact('targetTime', 'userId', 'weeklyTime'));
     }

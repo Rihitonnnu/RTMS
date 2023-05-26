@@ -2,10 +2,12 @@
 
 namespace App\Repositories\WeeklyTime;
 
-use Illuminate\Http\Request;
+use App\Models\WeeklyTime;
 
 interface WeeklyTimeRepositoryInterface
 {
-    public function store(Request $request): void;
-    public function update($weeklyTime, $researchTime): bool;
+    public function storeResearchTime(float $researchTime): void;
+    public function updateResearchTime(WeeklyTime $weeklyTime, float $researchTime): bool;
+    public function storeRestTime(float $restTime): void;
+    public function updateRestTime(WeeklyTime $weeklyTime, float $restTime): bool;
 }
