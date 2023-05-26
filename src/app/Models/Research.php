@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Research extends Model
@@ -64,7 +65,7 @@ class Research extends Model
             DB::commit();
             return true;
         } catch (Throwable $e) {
-            // ログで出力してあげるようにする
+            Log::debug($e);
             DB::rollBack();
         }
     }
@@ -111,6 +112,7 @@ class Research extends Model
             DB::commit();
             return true;
         } catch (Throwable $e) {
+            Log::debug($e);
             DB::rollBack();
         }
     }

@@ -52,6 +52,7 @@ class Rest extends Model
             DB::commit();
             return true;
         } catch (Throwable $e) {
+            Log::debug($e);
             DB::rollBack();
         }
     }
