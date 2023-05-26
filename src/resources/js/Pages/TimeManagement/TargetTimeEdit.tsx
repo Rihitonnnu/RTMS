@@ -17,7 +17,7 @@ function TargetTimeEdit({ targetTime }: TargetTimeEditProps) {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex items-center">
+      <div className="flex items-center w-fit mt-4 mx-auto">
         <Controller
           name="time"
           control={control}
