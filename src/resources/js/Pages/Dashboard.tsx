@@ -1,13 +1,24 @@
 import { Head } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { PageProps } from '@/types';
-import TimeManagement from '@/Features/Management/Component/TimeManagement';
+// import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+// import { PageProps } from '@/types';
 
-export default function Dashboard({ auth }: PageProps) {
+import TimeManagement from './TimeManagement/TimeManagement';
+
+type DashboardPropsType = {
+  targetTime: any;
+};
+
+export default function Dashboard(
+  // pageprops: PageProps,
+  { targetTime }: DashboardPropsType
+) {
+  // const { auth } = pageprops;
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
+      {/* <AuthenticatedLayout user={auth.user}> */}
       <Head title="Dashboard" />
-      <TimeManagement />
-    </AuthenticatedLayout>
+      <TimeManagement targetTime={targetTime} />
+      {/* </AuthenticatedLayout> */}
+    </>
   );
 }
