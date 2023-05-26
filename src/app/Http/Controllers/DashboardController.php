@@ -9,17 +9,24 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-
     public function index()
     {
-        // 今週の合計時間、目標時間、今週の時間を計算するサービスを作ったほうがいいかも
+        // ここはサービスで切り出さないほうがよさげ？
         $userId = Auth::id();
+
         // 今週の目標時間を取得
         $targetTime = TargetTime::where('user_id', $userId)->first();
 
-        // 今週の研究時間を取得
-        $weeklyTime = WeeklyTime::where('user_id', $userId)?->first()?->research_time;
+        // 今週の研究・休憩時間を取得
+        $weeklyResearchTime = WeeklyTime::where('user_id', $userId)?->first()?->research_time;
+        $weeklyRestTime = WeeklyTime::where('user_id', $userId)?->first()?->rest_time;
+        if ($weeklyRestTime < $weeklyResearchTime) {
+            // 休憩時間を抜いた研究時間
+            $weeklyTime = $weeklyResearchTime - $weeklyRestTime;
+        } else {
+            $weeklyTime = 0;
+        }
 
-        return Inertia::render('Dashboard', compact('targetTime', 'userId', 'weeklyTime'));
+        return Inertia::render('Dashboard', compact('targetTime', 'weeklyResearchTime', 'weeklyTime'));
     }
 }
