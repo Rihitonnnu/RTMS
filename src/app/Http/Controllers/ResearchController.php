@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ResearchController extends Controller
 {
+    private $research;
     /**
      * @param Time $time
      */

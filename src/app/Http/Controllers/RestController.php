@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class RestController extends Controller
 {
+    private $rest;
+
     public function __construct(Rest $rest)
     {
         $this->rest = $rest;
