@@ -8,4 +8,5 @@ use Illuminate\Http\Request;
 interface TargetTimeRepositoryInterface
 {
     public function store(Request $request): TargetTime;
+    public function update(Request $request, int $targetTimeId): void;
 }
