@@ -26,10 +26,18 @@ function TargetTimeList({ targetTime, weeklyTime }: TargetTimeEditProps) {
             </div>
 
             <div className="text-center">
-              <p>目標達成まであと</p>
-              <h1 className="font-bold text-2xl">
-                {`${targetTime.time - weeklyTime}時間`}
-              </h1>
+              {targetTime.time < weeklyTime ? (
+                <h1 className="font-bold text-2xl text-red-500">
+                  目標達成！おめでとう！
+                </h1>
+              ) : (
+                <>
+                  <p>目標達成まであと</p>
+                  <h1 className="font-bold text-2xl">
+                    {`${targetTime.time - weeklyTime}時間`}
+                  </h1>
+                </>
+              )}
             </div>
           </>
         )}
