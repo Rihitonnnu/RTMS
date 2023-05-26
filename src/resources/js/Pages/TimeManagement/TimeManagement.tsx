@@ -8,7 +8,7 @@ import useMultipleClickPreventer from '@/Hooks/useMultipleClickPreventer';
 import { TimeManagementProps } from '@/types/TimeManagement/TimeManagementType';
 import TargetTimeList from './TargetTimeList';
 
-function TimeManagement({ targetTime }: TimeManagementProps) {
+function TimeManagement({ targetTime, weeklyTime }: TimeManagementProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ function TimeManagement({ targetTime }: TimeManagementProps) {
             </div>
           </div>
 
-          <TargetTimeList targetTime={targetTime} />
+          <TargetTimeList targetTime={targetTime} weeklyTime={weeklyTime} />
         </div>
       </div>
     </div>

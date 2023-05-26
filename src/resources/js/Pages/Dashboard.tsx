@@ -6,18 +6,19 @@ import TimeManagement from './TimeManagement/TimeManagement';
 
 type DashboardPropsType = {
   targetTime: any;
+  weeklyTime: number;
 };
 
 export default function Dashboard(
   // pageprops: PageProps,
-  { targetTime }: DashboardPropsType
+  { targetTime, weeklyTime }: DashboardPropsType
 ) {
   // const { auth } = pageprops;
   return (
     <>
       {/* <AuthenticatedLayout user={auth.user}> */}
       <Head title="Dashboard" />
-      <TimeManagement targetTime={targetTime} />
+      <TimeManagement targetTime={targetTime} weeklyTime={weeklyTime} />
       {/* </AuthenticatedLayout> */}
     </>
   );
