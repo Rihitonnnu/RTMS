@@ -9,8 +9,10 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\ResearchController;
+use App\Http\Controllers\TargetTimeController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -59,6 +61,9 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
+    //ダッシュボード表示
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     // 研究開始・終了時間の打刻処理
     Route::post('researches/start', [ResearchController::class, 'storeStartTime'])->name('research.storeStartTime');
     Route::post('researches/end', [ResearchController::class, 'storeEndTime'])->name('research.storeEndTime');
@@ -66,4 +71,9 @@ Route::middleware('auth')->group(function () {
     // 休憩開始・終了時間の打刻処理
     Route::post('rests/start', [RestController::class, 'storeStartTime'])->name('rest.storeStartTime');
     Route::post('rests/end', [RestController::class, 'storeEndTime'])->name('rest.storeEndTime');
+
+    // 今週の目標時間
+    Route::post('targetTime', [TargetTimeController::class, 'store'])->name('targetTime.store');
+    Route::get('targetTime/{targetTimeId}', [TargetTimeController::class, 'edit'])->name('targetTime.edit');
+    Route::put('targetTime/{targetTimeId}', [TargetTimeController::class, 'update'])->name('targetTime.update');
 });

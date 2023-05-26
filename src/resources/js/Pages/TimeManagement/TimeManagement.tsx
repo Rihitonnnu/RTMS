@@ -1,13 +1,23 @@
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { router } from '@inertiajs/react';
 
 import TimeDisplay from './TimeDisplay';
 import Flash from '@/Layouts/Flash';
 import useMultipleClickPreventer from '@/Hooks/useMultipleClickPreventer';
+import { TimeManagementProps } from '@/types/TimeManagement/TimeManagementType';
+import TargetTimeList from './TargetTimeList';
 
-function TimeManagement() {
+function TimeManagement({ targetTime, weeklyTime }: TimeManagementProps) {
   const [open, setOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setOpen(true);
+    setTimeout(() => {
+      setOpen(false);
+    }, 2000);
+  }, [targetTime?.time]);
+
   // ダブルクリック防止
   const onSubmit = useMultipleClickPreventer((link) => {
     if (typeof link === 'string') {
@@ -24,6 +34,7 @@ function TimeManagement() {
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <Flash open={open} />
 
+        {/* ここうまくコンポーネント化したい */}
         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-4">
           <TimeDisplay />
           <div className="mx-auto mt-3 w-1/3 grid grid-cols-4">
@@ -63,6 +74,8 @@ function TimeManagement() {
               </Button>
             </div>
           </div>
+
+          <TargetTimeList targetTime={targetTime} weeklyTime={weeklyTime} />
         </div>
       </div>
     </div>

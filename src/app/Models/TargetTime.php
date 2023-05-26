@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Research extends Model
+class TargetTime extends Model
 {
     use HasFactory;
-
-    protected $table = 'researches';
 
     /**
      * The attributes that are mass assignable.
@@ -18,12 +16,6 @@ class Research extends Model
      */
     protected $fillable = [
         'user_id',
-        'start_time',
-        'end_time',
+        'time',
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }
