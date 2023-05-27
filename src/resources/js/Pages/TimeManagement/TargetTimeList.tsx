@@ -1,6 +1,8 @@
 import { Button, TextField } from '@mui/material';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { router } from '@inertiajs/react';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import type {
   TargetTimeInputs,
@@ -8,7 +10,21 @@ import type {
 } from '@/types/TimeManagement/TimeManagementType';
 
 function TargetTimeList({ targetTime, weeklyTime }: TargetTimeEditProps) {
-  const { control, handleSubmit } = useForm<TargetTimeInputs>();
+  const schema = yup.object({
+    time: yup
+      .number()
+      .required('目標時間を入力してください')
+      .typeError('数字を入力してください')
+  });
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<TargetTimeInputs>({
+    resolver: yupResolver(schema)
+  });
+
   const onTargetTimeSubmit: SubmitHandler<TargetTimeInputs> = (
     data: TargetTimeInputs
   ) => {
@@ -54,6 +70,10 @@ function TargetTimeList({ targetTime, weeklyTime }: TargetTimeEditProps) {
                   id="outlined-number"
                   label="週間目標時間（時間）"
                   type="number"
+                  // eslint-disable-next-line react/jsx-props-no-spreading
+                  {...register('time')}
+                  error={'time' in errors}
+                  helperText={errors.time?.message}
                 />
               )}
             />
