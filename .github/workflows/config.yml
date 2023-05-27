@@ -49,9 +49,6 @@ jobs:
           DB_HOST: 127.0.0.1
         run: php artisan migrate
         working-directory: ./src
-      # - name: Execute php-cs-fixer
-      #   run: |
-      #     ./vendor/bin/php-cs-fixer fix --using-cache=no
-      # - name: Execute phpstan
-      #   run: |
-      #     ./vendor/bin/phpstan analyse
+      - name: Execute phpstan
+        run: |
+          ./vendor/bin/phpstan analyse
