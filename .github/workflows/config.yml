@@ -37,14 +37,18 @@ jobs:
         run: |
           npm install
           npm run build
+        working-directory: ./src
       - name: Copy env.example
         run: cp .env.example .env
+        working-directory: ./src
       - name: Encryption Key generate
         run: php artisan key:generate
+        working-directory: ./src
       - name: Run Migrate
         env:
           DB_HOST: 127.0.0.1
         run: php artisan migrate
+        working-directory: ./src
       # - name: Execute php-cs-fixer
       #   run: |
       #     ./vendor/bin/php-cs-fixer fix --using-cache=no
