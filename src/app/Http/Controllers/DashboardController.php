@@ -18,8 +18,8 @@ class DashboardController extends Controller
         $targetTime = TargetTime::where('user_id', $userId)->first();
 
         // 今週の研究・休憩時間を取得
-        $weeklyResearchTime = WeeklyTime::where('user_id', $userId)->first()->research_time;
-        $weeklyRestTime = WeeklyTime::where('user_id', $userId)->first()->rest_time;
+        $weeklyResearchTime = WeeklyTime::where('user_id', $userId)->first()?->research_time;
+        $weeklyRestTime = WeeklyTime::where('user_id', $userId)->first()?->rest_time;
         if ($weeklyRestTime < $weeklyResearchTime) {
             // 休憩時間を抜いた研究時間
             $weeklyTime = $weeklyResearchTime - $weeklyRestTime;
