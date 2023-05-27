@@ -10,6 +10,10 @@ class RestController extends Controller
 {
     private $restService;
 
+    /**
+     * @param RestService $restService
+     * @return void
+     */
     public function __construct(RestService $restService)
     {
         $this->restService = $restService;
@@ -18,7 +22,7 @@ class RestController extends Controller
     /**
      * 休憩開始時間を登録
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function storeStartTime()
     {
@@ -36,6 +40,8 @@ class RestController extends Controller
 
     /**
      * 休憩終了時間を登録
+     * 
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function storeEndTime()
     {

@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Research;
 
-use App\Models\Research;
+use App\Models\TargetTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,7 +10,8 @@ class ResearchRepository implements ResearchRepositoryInterface
 {
     private $targetTime;
     /**
-     * @var App\Models\TargetTime
+     * @param \App\Models\TargetTime $targetTime
+     * @return void
      */
     public function __construct(TargetTime $targetTime)
     {
@@ -23,7 +24,7 @@ class ResearchRepository implements ResearchRepositoryInterface
      * @param Request $request
      * @return TargetTime
      */
-    public function store(Request $request): Research
+    public function store(Request $request): TargetTime
     {
         $time = $request->input('time');
 
@@ -38,7 +39,7 @@ class ResearchRepository implements ResearchRepositoryInterface
      * 目標時間を更新する
      *
      * @param Request $request
-     * @return \App\Models\TargetTime
+     * @return void
      */
     public function update(Request $request, int $targetTimeId): void
     {

@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -49,42 +51,36 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function researches()
+    public function researches(): HasMany
     {
-        return $this->hasMany(Time::class);
+        return $this->hasMany(Research::class);
     }
 
-    public function weeklyTime()
+    public function weeklyTime(): HasOne
     {
-        return $this->hasOne(weeklyTime::class);
+        return $this->hasOne(WeeklyTime::class);
     }
 
     /**
      * 現在記録中のtimesに紐付ける
-     *
-     * @return void
      */
-    public function currentResearch()
+    public function currentResearch(): HasOne
     {
         return $this->hasOne(Research::class, 'id', 'research_id');
     }
 
     /**
      * 現在記録中のrestsに紐付ける
-     *
-     * @return void
      */
-    public function currentRest()
+    public function currentRest(): HasOne
     {
         return $this->hasOne('App\Models\Rest', 'id', 'rest_id');
     }
 
     /**
      * 今週の週間研究時間を紐付ける
-     *
-     * @return void
      */
-    public function currentWeeklyTime()
+    public function currentWeeklyTime(): HasOne
     {
         return $this->hasOne('App\Models\WeeklyTime', 'id', 'weekly_time_id');
     }

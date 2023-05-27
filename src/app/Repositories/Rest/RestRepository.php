@@ -9,7 +9,8 @@ class RestRepository implements RestRepositoryInterface
 {
     private $rest;
     /**
-     * @var \App\Models\Rest
+     * @param \App\Models\Rest $rest
+     * @return void
      */
     public function __construct(Rest $rest)
     {
@@ -33,10 +34,11 @@ class RestRepository implements RestRepositoryInterface
     /**
      * 休憩時間を更新する
      *
-     * @param Rest $request
-     * @return \App\Models\TargetTime
+     * @param Rest $currentRest
+     * @param \Carbon\Carbon $endTime
+     * @return void
      */
-    public function update(Rest $currentRest, $endTime): void
+    public function update(Rest $currentRest, \Carbon\Carbon $endTime): void
     {
         $currentRest->fill(['end_time' => $endTime])->save();
     }

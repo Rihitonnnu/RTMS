@@ -30,7 +30,8 @@ class RestService
      * 休憩開始時間を登録する
      *
      * @param integer $researchId
-     * @return boolean
+     * @return bool
+     * @throws Throwable
      */
     public function store(int $researchId)
     {
@@ -51,6 +52,7 @@ class RestService
         } catch (Throwable $e) {
             Log::debug($e);
             DB::rollBack();
+            return false;
         }
     }
 
@@ -58,12 +60,13 @@ class RestService
      * 休憩終了時間を登録する
      *
      * @param integer $researchId
-     * @return boolean
+     * @return bool
      */
     public function update(int $researchId)
     {
         try {
             $user = User::find(Auth::id());
+            /** @var \App\Models\Research */
             $research = Research::find($researchId);
             if (!$research->user->is_rested) {
                 return false;
@@ -84,7 +87,7 @@ class RestService
 
             // 今週の初めと終わりの日を取得
             $weekFirst = Carbon::today()->startOfWeek();
-            $weekLast = Carbon::today()->addWeek(1);
+            $weekLast = Carbon::today()->addWeek();
             $createdWeeklyTime = new Carbon($user?->currentWeeklyTime?->created_at);
 
             // 前回登録したweekly_timesがない、もしくは先週のものであれば新しく作成し、そうでなければ前回のweekly_timesのrest_timeを取得し、更新する
@@ -101,6 +104,7 @@ class RestService
         } catch (Throwable $e) {
             Log::debug($e);
             DB::rollBack();
+            return false;
         }
     }
 }

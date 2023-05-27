@@ -20,7 +20,7 @@ class TargetTimeController extends Controller
      * 目標時間の登録
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -32,6 +32,7 @@ class TargetTimeController extends Controller
      * 目標時間編集画面へ
      *
      * @param integer $targetTimeId
+     * @return \Inertia\Response
      */
     public function edit(int $targetTimeId): \Inertia\Response
     {
@@ -44,7 +45,7 @@ class TargetTimeController extends Controller
      *
      * @param Request $request
      * @param integer $targetTimeId
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, int $targetTimeId)
     {

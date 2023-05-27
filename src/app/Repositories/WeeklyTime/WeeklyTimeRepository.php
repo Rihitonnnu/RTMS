@@ -10,7 +10,8 @@ class WeeklyTimeRepository implements WeeklyTimeRepositoryInterface
 {
     private $weeklyTime;
     /**
-     * @var App\Models\WeeklyTime
+     * @param \App\Models\WeeklyTime $weeklyTime
+     * @return void
      */
     public function __construct(WeeklyTime $weeklyTime)
     {
@@ -20,6 +21,7 @@ class WeeklyTimeRepository implements WeeklyTimeRepositoryInterface
     /**
      * 週間研究時間を登録する
      *
+     * @param float $researchTime
      * @return void
      */
     public function storeResearchTime(float $researchTime): void
@@ -65,10 +67,10 @@ class WeeklyTimeRepository implements WeeklyTimeRepositoryInterface
      * 週間休憩時間を加算して更新する
      * 
      * @param \App\Models\WeeklyTime $weeklyTime
-     * @param float $researchTime
+     * @param float $restTime
      * @return bool
      */
-    public function updateRestTime(WeeklyTime $weeklyTime, $restTime): bool
+    public function updateRestTime(WeeklyTime $weeklyTime, float $restTime): bool
     {
         $updatedWeeklyTime = $weeklyTime->research_time + $restTime;
         return $weeklyTime->fill(['rest_time' => $updatedWeeklyTime])->save();

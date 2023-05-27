@@ -10,7 +10,8 @@ class TargetTimeRepository implements TargetTimeRepositoryInterface
 {
     private $targetTime;
     /**
-     * @var App\Models\TargetTime
+     * @param \App\Models\TargetTime $targetTime
+     * @return void
      */
     public function __construct(TargetTime $targetTime)
     {
@@ -38,7 +39,7 @@ class TargetTimeRepository implements TargetTimeRepositoryInterface
      * 目標時間を更新する
      *
      * @param Request $request
-     * @return \App\Models\TargetTime
+     * @return void
      */
     public function update(Request $request, int $targetTimeId): void
     {
