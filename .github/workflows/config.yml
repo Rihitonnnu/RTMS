@@ -29,7 +29,9 @@ jobs:
           php-version: '8.1.9'
           extensions: mbstring, intl
           coverage: none
-
+      - name: Change Directory
+        run: |
+          cd ./src
       - name: Composer install
         run: |
           composer install --ignore-platform-reqs
