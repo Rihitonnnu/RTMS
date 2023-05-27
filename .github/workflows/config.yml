@@ -52,6 +52,7 @@ jobs:
       - name: Execute phpstan
         run: |
           ./vendor/bin/phpstan analyse
+        working-directory: ./src
 
   frontend-test:
     runs-on: ubuntu-latest
