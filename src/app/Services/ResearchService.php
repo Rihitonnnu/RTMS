@@ -24,7 +24,7 @@ class ResearchService
      * 研究開始時間を登録する
      *
      * @param integer $userId
-     * @return boolean
+     * @return bool
      */
     public function store(int $userId)
     {
@@ -45,6 +45,7 @@ class ResearchService
         } catch (Throwable $e) {
             Log::debug($e);
             DB::rollBack();
+            return false;
         }
     }
 
@@ -52,7 +53,7 @@ class ResearchService
      * 研究終了時間を登録する
      *
      * @param integer $userId
-     * @return boolean
+     * @return bool
      */
     public function update(int $userId)
     {
@@ -75,7 +76,7 @@ class ResearchService
 
             //研究時間を登録・更新する処理　1週間に入っているのか新たに更新する必要があるのかどうかの分岐
             $weekFirst = Carbon::today()->startOfWeek();
-            $weekLast = Carbon::today()->addWeek(1);
+            $weekLast = Carbon::today()->addWeek();
             $createdWeeklyTime = new Carbon($user?->currentWeeklyTime?->created_at);
 
             // 前回登録したweekly_timesがない、もしくは先週のものであれば新しく作成し、そうでなければ前回のweekly_timesのresearch_timeを取得し、更新する
@@ -92,6 +93,7 @@ class ResearchService
         } catch (Throwable $e) {
             Log::debug($e);
             DB::rollBack();
+            return false;
         }
     }
 }

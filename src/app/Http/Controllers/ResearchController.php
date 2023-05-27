@@ -20,7 +20,7 @@ class ResearchController extends Controller
     /**
      * 開始時間を登録
      *
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function storeStartTime()
     {
@@ -35,6 +35,8 @@ class ResearchController extends Controller
 
     /**
      * 終了時間を登録
+     * 
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function storeEndTime()
     {
