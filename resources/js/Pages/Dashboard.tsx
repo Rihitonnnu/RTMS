@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 // import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 // import { PageProps } from '@/types';
 
+import Layout from '@/Layouts/Layout';
 import TimeManagement from './TimeManagement/TimeManagement';
 
 type DashboardPropsType = {
@@ -9,17 +10,15 @@ type DashboardPropsType = {
   weeklyTime: number;
 };
 
-export default function Dashboard(
-  // pageprops: PageProps,
-  { targetTime, weeklyTime }: DashboardPropsType
-) {
+export default function Dashboard({
+  targetTime,
+  weeklyTime
+}: DashboardPropsType) {
   // const { auth } = pageprops;
   return (
-    <>
-      {/* <AuthenticatedLayout user={auth.user}> */}
+    <Layout>
       <Head title="Dashboard" />
       <TimeManagement targetTime={targetTime} weeklyTime={weeklyTime} />
-      {/* </AuthenticatedLayout> */}
-    </>
+    </Layout>
   );
 }
