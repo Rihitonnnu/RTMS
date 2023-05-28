@@ -67,4 +67,3 @@ jobs:
         working-directory: ./src
       - name: Run eslint
         run: npm run lint
-        working-directory: ./src
