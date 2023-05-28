@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\WeeklyTime;
 use Illuminate\Console\Command;
 use App\Services\SlackNotificationServiceInterface;
+use Illuminate\Support\Facades\Log;
 
 class WeeklyTimeNotificationBatch extends Command
 {
@@ -56,7 +57,7 @@ class WeeklyTimeNotificationBatch extends Command
                 $message = "今週はまだ研究をしていません。\n目標時間を設定してください \n\n貴様アアア!逃げるなアア!\n研究から逃げるなアア!";
             } else if ($weeklyTime == null && $targetTime != null) {
                 // 今週研究していない場合で週間目標時間は設定されている
-                $message = "今週はまだ研究をしていません。" . "\n目標まではあと" . (string)$targetTime . "時間です";
+                $message = "今週はまだ研究をしていません。" . "\n目標まではあと" . (string)$targetTime->time . "時間です";
             } else if ($weeklyTime != null && $targetTime == null) {
                 $message = "あなたの今週の研究時間は" . (string)($weeklyTime->research_time - $weeklyTime->rest_time) . "時間です" . "\n目標を設定してください";
             } else {
