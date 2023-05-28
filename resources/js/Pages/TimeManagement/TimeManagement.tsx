@@ -2,10 +2,10 @@ import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { router } from '@inertiajs/react';
 
-import TimeDisplay from './TimeDisplay';
 import Flash from '@/Layouts/Flash';
 import useMultipleClickPreventer from '@/Hooks/useMultipleClickPreventer';
 import { TimeManagementProps } from '@/types/TimeManagement/TimeManagementType';
+import TimeDisplay from './TimeDisplay';
 import TargetTimeList from './TargetTimeList';
 
 function TimeManagement({ targetTime, weeklyTime }: TimeManagementProps) {
