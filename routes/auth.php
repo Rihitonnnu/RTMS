@@ -73,7 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::post('rests/end', [RestController::class, 'storeEndTime'])->name('rest.storeEndTime');
 
     // 今週の目標時間
-    Route::post('targetTime', [TargetTimeController::class, 'store'])->name('targetTime.store');
-    Route::get('targetTime/{targetTimeId}', [TargetTimeController::class, 'edit'])->name('targetTime.edit');
-    Route::put('targetTime/{targetTimeId}', [TargetTimeController::class, 'update'])->name('targetTime.update');
+    Route::post('target-time', [TargetTimeController::class, 'store'])->name('targetTime.store');
+    Route::get('target-time/{targetTimeId}', [TargetTimeController::class, 'edit'])->name('targetTime.edit');
+    Route::put('target-time/{targetTimeId}', [TargetTimeController::class, 'update'])->name('targetTime.update');
 });
