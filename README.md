@@ -50,6 +50,12 @@ php artisan key:generate
 php artisan migrate:fresh --seed
 ```
 
+### テスト DB のマイグレーション
+
+```
+php artisan migrate --env=testing
+```
+
 ## Vite セットアップ
 
 ### npm インストール(app コンテナ内)
