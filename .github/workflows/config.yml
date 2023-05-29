@@ -15,7 +15,7 @@ jobs:
         image: mysql:8.0.30
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: authenticate
+          MYSQL_DATABASE: test
           MYSQL_USER: user
           MYSQL_PASSWORD: password
         ports:
