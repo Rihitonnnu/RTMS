@@ -30,12 +30,12 @@ class DailyController extends Controller
         $restTime = $request->input('rest_time');
         $dailyTime = DailyTime::find($dailyTimeId);
         $this->dailyTimeRepository->updateDailyTime($researchTime, $restTime, $dailyTime);
-        return to_route('monthlyTime.index');
+        return to_route('monthlyTime.index')->with('flash_message', '研究時間を修正しました');
     }
 
     public function destroy(int $dailyTimeId)
     {
         $this->dailyTimeRepository->destroyDailyTime(DailyTime::find($dailyTimeId));
-        return to_route('monthlyTime.index');
+        return to_route('monthlyTime.index')->with('flash_message', '研究時間を削除しました');
     }
 }
