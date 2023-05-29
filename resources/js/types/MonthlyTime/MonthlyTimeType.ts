@@ -1,4 +1,4 @@
-export type MonthlyTimeListPageProps = {
+type ThisMonthInfos = {
   thisMonthInfos: {
     id: number;
     user_id: number;
@@ -9,3 +9,7 @@ export type MonthlyTimeListPageProps = {
     updated_at: Date;
   }[];
 };
+
+export type MonthlyTimeListPageProps = ThisMonthInfos;
+
+export type MonthyTimeListTableProps = ThisMonthInfos;
