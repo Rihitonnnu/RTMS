@@ -37,13 +37,17 @@ jobs:
           npm install
           npm run build
       - name: Copy env.example
-        run: cp .env.example .env
+        run: cp .env.testing .env
       - name: Encryption Key generate
-        run: php artisan key:generate
+        run: php artisan key:generate --env=testing
       - name: Run Migrate
         env:
           DB_HOST: 127.0.0.1
-        run: php artisan migrate
+        run: php artisan migrate --env=testing
+      - name: Run PHPUnit
+        env:
+          DB_HOST: 127.0.0.1
+        run: vendor/bin/phpunit
       - name: Execute phpstan
         run: |
           ./vendor/bin/phpstan analyse
