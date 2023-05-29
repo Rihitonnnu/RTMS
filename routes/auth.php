@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MonthlyTimeController;
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\TargetTimeController;
@@ -76,4 +77,7 @@ Route::middleware('auth')->group(function () {
     Route::post('target-time', [TargetTimeController::class, 'store'])->name('targetTime.store');
     Route::get('target-time/{targetTimeId}', [TargetTimeController::class, 'edit'])->name('targetTime.edit');
     Route::put('target-time/{targetTimeId}', [TargetTimeController::class, 'update'])->name('targetTime.update');
+
+    // 月間の研究時間
+    Route::get('monthly-time', [MonthlyTimeController::class, 'index'])->name('monthlyTime.index');
 });
