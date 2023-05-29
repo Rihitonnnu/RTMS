@@ -10,6 +10,8 @@ type ThisMonthInfos = {
   }[];
 };
 
-export type MonthlyTimeListPageProps = ThisMonthInfos;
+export type MonthlyTimeListPageProps = ThisMonthInfos & {
+  thisMonthResearchTime: number;
+};
 
 export type MonthyTimeListTableProps = ThisMonthInfos;

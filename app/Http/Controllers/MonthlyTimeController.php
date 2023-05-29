@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DailyTime;
 use App\Services\MonthlyTimeService;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class MonthlyTimeController extends Controller
 {
@@ -20,15 +17,9 @@ class MonthlyTimeController extends Controller
     public function index()
     {
         $this->monthlyTimeService->storeNotRegisteredDay();
-        $userId = Auth::id();
-        $firstDayThisMonth = Carbon::now()->startOfMonth();
-        $endDayThisMonth = Carbon::now()->endOfMonth();
+        $thisMonthInfos = $this->monthlyTimeService->getThisMonthInfos();
+        $thisMonthResearchTime = $this->monthlyTimeService->getThisMonthResearchTime($thisMonthInfos);
 
-        $thisMonthInfos = DailyTime::where('user_id', $userId)
-            ->where('date', '>=', $firstDayThisMonth->format('Y/m/d'))
-            ->where('date', '<=', $endDayThisMonth->format('Y/m/d'))
-            ->orderBy('date', 'asc')
-            ->get();
-        return Inertia::render('MonthlyTime/MonthlyTimeListPage', compact('thisMonthInfos'));
+        return Inertia::render('MonthlyTime/MonthlyTimeListPage', compact('thisMonthInfos', 'thisMonthResearchTime'));
     }
 }
