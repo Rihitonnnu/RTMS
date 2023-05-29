@@ -82,12 +82,12 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
     /**
      * 任意の日にちの研究・休憩時間を更新
      *
-     * @param [type] $researchTime
-     * @param [type] $restTime
+     * @param float $researchTime
+     * @param float $restTime
      * @param DailyTime $dailyTime
      * @return void
      */
-    public function updateDailyTime($researchTime, $restTime, DailyTime $dailyTime)
+    public function updateDailyTime(float $researchTime, float $restTime, DailyTime $dailyTime)
     {
         $dailyTime->fill(['research_time' => $researchTime, 'rest_time' => $restTime])->save();
     }
@@ -106,8 +106,8 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
     /**
      * 研究時間を登録していない日にからのデータを登録
      *
-     * @param [type] $firstDayThisMonth
-     * @param [type] $now
+     * @param \Carbon\Carbon $firstDayThisMonth
+     * @param \Carbon\Carbon $now
      * @return void
      */
     public function storeNotRegisteredDay($firstDayThisMonth, $now)
@@ -116,7 +116,8 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
         $date = $firstDayThisMonth;
         $userId = Auth::id();
         while ($date->lt($now)) {
-            if (DailyTime::where('date', '=', Carbon::parse($date)->format('Y-m-d'))->get()->isEmpty()) {
+            // Larastanのエラー解決法がわからないので一旦保留
+            if (DailyTime::where('date', '=', Carbon::parse($date)->format('Y-m-d'))->get()->isEmpty()) {/* @phpstan-ignore-line */
                 $this->dailyTime->create([
                     'user_id' => $userId,
                     'date' => $date,

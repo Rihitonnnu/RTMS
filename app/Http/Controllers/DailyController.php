@@ -24,7 +24,9 @@ class DailyController extends Controller
 
     public function update(Request $request, int $dailyTimeId)
     {
+        /** @var float */
         $researchTime = $request->input('research_time');
+        /** @var float */
         $restTime = $request->input('rest_time');
         $dailyTime = DailyTime::find($dailyTimeId);
         $this->dailyTimeRepository->updateDailyTime($researchTime, $restTime, $dailyTime);
