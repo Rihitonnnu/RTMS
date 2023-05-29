@@ -20,6 +20,10 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\WeeklyTime\WeeklyTimeRepository::class
         );
         $this->app->bind(
+            \App\Repositories\DailyTime\DailyTimeRepositoryInterface::class,
+            \App\Repositories\DailyTime\DailyTimeRepository::class
+        );
+        $this->app->bind(
             \App\Repositories\Rest\RestRepositoryInterface::class,
             \App\Repositories\Rest\RestRepository::class
         );

@@ -9,7 +9,9 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\DailyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MonthlyTimeController;
 use App\Http\Controllers\RestController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\TargetTimeController;
@@ -73,7 +75,15 @@ Route::middleware('auth')->group(function () {
     Route::post('rests/end', [RestController::class, 'storeEndTime'])->name('rest.storeEndTime');
 
     // 今週の目標時間
-    Route::post('targetTime', [TargetTimeController::class, 'store'])->name('targetTime.store');
-    Route::get('targetTime/{targetTimeId}', [TargetTimeController::class, 'edit'])->name('targetTime.edit');
-    Route::put('targetTime/{targetTimeId}', [TargetTimeController::class, 'update'])->name('targetTime.update');
+    Route::post('target-time', [TargetTimeController::class, 'store'])->name('targetTime.store');
+    Route::get('target-time/{targetTimeId}', [TargetTimeController::class, 'edit'])->name('targetTime.edit');
+    Route::put('target-time/{targetTimeId}', [TargetTimeController::class, 'update'])->name('targetTime.update');
+
+    // 月間の研究時間
+    Route::get('monthly-time', [MonthlyTimeController::class, 'index'])->name('monthlyTime.index');
+
+    // 一日の研究時間
+    Route::get('daily-time/{dailyTimeId}', [DailyController::class, 'edit'])->name('dailyTime.edit');
+    Route::put('daily-time/{dailyTimeId}', [DailyController::class, 'update'])->name('dailyTime.update');
+    Route::delete('daily-time/{dailyTimeId}', [DailyController::class, 'destroy'])->name('dailyTime.destroy');
 });

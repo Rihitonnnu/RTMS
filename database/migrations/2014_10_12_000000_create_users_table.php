@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('research_id')->nullable();
             $table->integer('rest_id')->nullable();
             $table->integer('weekly_time_id')->nullable();
+            $table->integer('daily_time_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

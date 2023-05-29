@@ -11,18 +11,21 @@ use Carbon\Carbon;
 use App\Repositories\WeeklyTime\WeeklyTimeRepository;
 use App\Services\TimeBasedConversionService;
 use App\Models\Research;
+use App\Repositories\DailyTime\DailyTimeRepository;
 use Illuminate\Support\Facades\Auth;
 
 class RestService
 {
     private $timeBasedConversionService;
     private $weeklyTimeRepository;
+    private $dailyTimeRepository;
     private $restRepository;
 
-    public function __construct(TimeBasedConversionService $timeBasedConversionService, WeeklyTimeRepository $weeklyTimeRepository, RestRepository $restRepository)
+    public function __construct(TimeBasedConversionService $timeBasedConversionService, WeeklyTimeRepository $weeklyTimeRepository, DailyTimeRepository $dailyTimeRepository, RestRepository $restRepository)
     {
         $this->timeBasedConversionService = $timeBasedConversionService;
         $this->weeklyTimeRepository = $weeklyTimeRepository;
+        $this->dailyTimeRepository = $dailyTimeRepository;
         $this->restRepository = $restRepository;
     }
 
@@ -96,6 +99,19 @@ class RestService
             } else {
                 $weeklyTime = $user->currentWeeklyTime;
                 $this->weeklyTimeRepository->updateRestTime($weeklyTime, $restTime);
+            }
+
+            $createdDailyTime = new Carbon($user?->currentDailyTime?->created_at);
+            $dayFirst = Carbon::today()->startOfDay();
+            $dayLast = Carbon::today()->startOfDay()->addDay();
+
+            // 前回登録したdaily_timeがない、もしくは先週のものであれば新しく作成し、そうでなければ前回のdaily_timesのresearch_timeを取得し、更新する
+            if (is_null($user?->currentDailyTime) || ($createdDailyTime->lt($dayFirst) || $createdDailyTime->gt($dayLast))) {
+                $this->dailyTimeRepository->storeRestTime($restTime);
+            } else {
+                /** @var \App\Models\DailyTime */
+                $dailyTime = $user->currentDailyTime;
+                $this->dailyTimeRepository->updateRestTime($dailyTime, $restTime);
             }
 
             DB::commit();
