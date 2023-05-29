@@ -1,14 +1,17 @@
 import { format } from 'date-fns';
+import { useForm } from 'react-hook-form';
+
 import { Button } from '@mui/material';
 import { router } from '@inertiajs/react';
-
 import type { MonthyTimeListTableProps } from '@/types/MonthlyTime/MonthlyTimeType';
 
 function MonthyTimeListTable({ thisMonthInfos }: MonthyTimeListTableProps) {
-  const handleSubmit = (id: number) => {
+  const { handleSubmit } = useForm({});
+  const onSubmit = (id: number) => {
     const method = { _method: 'DELETE' };
     router.post(route('dailyTime.destroy', id), method);
   };
+
   return (
     <table className="w-full table-border table-fixed">
       <thead className="bg-blue-200">
@@ -51,7 +54,7 @@ function MonthyTimeListTable({ thisMonthInfos }: MonthyTimeListTableProps) {
               </Button>
             </td>
             <td className="py-1 table-border border border-gray-300">
-              <form onSubmit={() => handleSubmit(thisMonthInfo.id)}>
+              <form onSubmit={handleSubmit(() => onSubmit(thisMonthInfo.id))}>
                 <Button
                   type="submit"
                   disabled={
