@@ -44,10 +44,10 @@ jobs:
         env:
           DB_HOST: 127.0.0.1
         run: php artisan migrate --env=testing
-      - name: Run PHPUnit
+      - name: Run Pest
         env:
           DB_HOST: 127.0.0.1
-        run: vendor/bin/phpunit
+        run: ./vendor/bin/pest
       - name: Execute phpstan
         run: |
           ./vendor/bin/phpstan analyse
