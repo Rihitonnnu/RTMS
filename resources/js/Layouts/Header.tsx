@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import { Link } from '@inertiajs/react';
 
 export default function Header() {
   const [auth, setAuth] = React.useState(true);
@@ -28,8 +29,19 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            RTMS
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, display: 'flex' }}
+          >
+            <div>
+              <Link href="dashboard">RTMS</Link>
+            </div>
+            <div className="ml-10">
+              <Link className="text-base" href={route('monthlyTime.index')}>
+                今月の研究時間
+              </Link>
+            </div>
           </Typography>
           {auth && (
             <div>
