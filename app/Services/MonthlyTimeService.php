@@ -21,7 +21,7 @@ class MonthlyTimeService
     /**
      * 今月の研究時間に関する情報を取得
      *
-     * @return \App\Models\DailyTime
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getThisMonthInfos()
     {
@@ -40,13 +40,14 @@ class MonthlyTimeService
     /**
      * 今月の研究時間を取得
      *
-     * @param \App\Models\DailyTime $thisMonthInfos
+     * @param \Illuminate\Database\Eloquent\Collection $thisMonthInfos
      * @return float
      */
     public function getThisMonthResearchTime($thisMonthInfos): float
     {
         $thisMonthResearchTime = 0;
         foreach ($thisMonthInfos as $thisMonthInfo) {
+            /** @var \App\Models\DailyTime $thisMonthInfo */
             $thisMonthResearchTime += $thisMonthInfo->research_time - $thisMonthInfo->rest_time;
         }
         return $thisMonthResearchTime;
