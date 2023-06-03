@@ -38,25 +38,18 @@ class RestService
      */
     public function store(int $researchId)
     {
-        try {
-            DB::beginTransaction();
+        return DB::transaction(function () use ($researchId) {
             $rest = $this->restRepository->store($researchId);
 
             $user = User::find(Auth::id());
 
             if ($user->is_rested) { // 開始時間が打刻されている場合はrollbackしてエラーメッセージを表示させる
-                DB::rollBack();
                 return false;
             }
             // ここもrepositoryで切り分け
             $user->fill(['is_rested' => true, 'rest_id' => $rest->id])->save();
-            DB::commit();
             return true;
-        } catch (Throwable $e) {
-            Log::debug($e);
-            DB::rollBack();
-            return false;
-        }
+        });
     }
 
     /**
@@ -67,7 +60,7 @@ class RestService
      */
     public function update(int $researchId)
     {
-        try {
+        return DB::transaction(function () use ($researchId) {
             $user = User::find(Auth::id());
             /** @var \App\Models\Research */
             $research = Research::find($researchId);
@@ -113,14 +106,7 @@ class RestService
                 $dailyTime = $user->currentDailyTime;
                 $this->dailyTimeRepository->updateRestTime($dailyTime, $restTime);
             }
-
-            DB::commit();
-
             return true;
-        } catch (Throwable $e) {
-            Log::debug($e);
-            DB::rollBack();
-            return false;
-        }
+        });
     }
 }
