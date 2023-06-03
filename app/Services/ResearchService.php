@@ -31,8 +31,7 @@ class ResearchService
      */
     public function store(int $userId)
     {
-        try {
-            DB::beginTransaction();
+        return DB::transaction(function () use ($userId) {
             DB::insert('insert into researches (user_id,start_time) values (?,?)', [$userId, Carbon::now()]);
 
             $user = DB::select('select * from users where id=?', [$userId]);
@@ -43,13 +42,8 @@ class ResearchService
                 return false;
             }
             DB::update('update users set is_started=true,research_id=? where id=?', [$research->id, $userId]);
-            DB::commit();
             return true;
-        } catch (Throwable $e) {
-            Log::debug($e);
-            DB::rollBack();
-            return false;
-        }
+        }, 2);
     }
 
     /**
@@ -60,9 +54,7 @@ class ResearchService
      */
     public function update(int $userId)
     {
-        try {
-            DB::beginTransaction();
-
+        return DB::transaction(function () use ($userId) {
             $user = User::find($userId);
             if (!$user->is_started) {
                 return false;
@@ -103,13 +95,7 @@ class ResearchService
                 $dailyTime = $user->currentDailyTime;
                 $this->dailyTimeRepository->updateResearchTime($dailyTime, $researchTime);
             }
-
-            DB::commit();
             return true;
-        } catch (Throwable $e) {
-            Log::debug($e);
-            DB::rollBack();
-            return false;
-        }
+        });
     }
 }
