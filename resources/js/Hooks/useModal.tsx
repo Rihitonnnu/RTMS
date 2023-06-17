@@ -5,8 +5,7 @@ export type ModalProps = () => [
   ModalWrapper: React.FC<{ children: React.ReactNode }>,
   open: () => void,
   close: () => void,
-  isOpenModal: boolean,
-  children: JSX.Element
+  isOpenModal: boolean
 ];
 
 const useModal: ModalProps = () => {
