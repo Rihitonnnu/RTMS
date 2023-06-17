@@ -39,12 +39,12 @@ class TargetTimeRepository implements TargetTimeRepositoryInterface
      * 目標時間を更新する
      *
      * @param Request $request
-     * @return void
+     * @return bool
      */
-    public function update(Request $request, int $targetTimeId): void
+    public function update(Request $request, int $targetTimeId): bool
     {
         $time = $request->input('time');
 
-        $this->targetTime::find($targetTimeId)->fill(['time' => $time])->save();;
+        return $this->targetTime::find($targetTimeId)->fill(['time' => $time])->save();;
     }
 }

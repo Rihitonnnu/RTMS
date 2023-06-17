@@ -7,5 +7,5 @@ use App\Models\Rest;
 interface RestRepositoryInterface
 {
     public function store(int $researchId): Rest;
-    public function update(Rest $currentRest, \Carbon\Carbon $endTime): void;
+    public function update(Rest $currentRest, \Carbon\Carbon $endTime): bool;
 }
