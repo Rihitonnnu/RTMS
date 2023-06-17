@@ -1,16 +1,12 @@
 import { format } from 'date-fns';
-import { useForm } from 'react-hook-form';
-
 import { Button } from '@mui/material';
-import { router } from '@inertiajs/react';
+
+import useModal from '@/Hooks/useModal';
 import type { MonthyTimeListTableProps } from '@/types/MonthlyTime/MonthlyTimeType';
+import TimeDeleteModal from '@/Components/Modal/TimeDeleteModal';
 
 function MonthyTimeListTable({ thisMonthInfos }: MonthyTimeListTableProps) {
-  const { handleSubmit } = useForm({});
-  const onSubmit = (id: number) => {
-    const method = { _method: 'DELETE' };
-    router.post(route('dailyTime.destroy', id), method);
-  };
+  const [Modal, open, close, isOpen] = useModal();
 
   return (
     <table className="w-full table-border table-fixed">
@@ -54,19 +50,25 @@ function MonthyTimeListTable({ thisMonthInfos }: MonthyTimeListTableProps) {
               </Button>
             </td>
             <td className="py-1 table-border border border-gray-300">
-              <form onSubmit={handleSubmit(() => onSubmit(thisMonthInfo.id))}>
-                <Button
-                  type="submit"
-                  disabled={
-                    thisMonthInfo.research_time === null &&
-                    thisMonthInfo.rest_time == null
-                  }
-                  variant="contained"
-                  color="error"
-                >
-                  削除
-                </Button>
-              </form>
+              <Button
+                type="button"
+                onClick={open}
+                disabled={
+                  thisMonthInfo.research_time === null &&
+                  thisMonthInfo.rest_time == null
+                }
+                variant="contained"
+                color="error"
+              >
+                削除
+              </Button>
+              <Modal>
+                <TimeDeleteModal
+                  id={thisMonthInfo.id}
+                  modalIsOpen={isOpen}
+                  setModalIsOpen={close}
+                />
+              </Modal>
             </td>
           </tr>
         ))}
