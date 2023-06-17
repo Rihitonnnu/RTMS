@@ -17,6 +17,7 @@ const useModal: ModalProps = () => {
     setIsOpenModal(false);
   }, [setIsOpenModal]);
   const ModalWrapper = useCallback(
+    // @ts-ignore
     ({ children }) => (
       <BaseModal isOpen={isOpenModal} onClose={close}>
         {children}
