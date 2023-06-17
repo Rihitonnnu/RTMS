@@ -36,10 +36,10 @@ class RestRepository implements RestRepositoryInterface
      *
      * @param Rest $currentRest
      * @param \Carbon\Carbon $endTime
-     * @return void
+     * @return bool
      */
-    public function update(Rest $currentRest, \Carbon\Carbon $endTime): void
+    public function update(Rest $currentRest, \Carbon\Carbon $endTime): bool
     {
-        $currentRest->fill(['end_time' => $endTime])->save();
+        return $currentRest->fill(['end_time' => $endTime])->save();
     }
 }

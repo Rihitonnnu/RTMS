@@ -23,9 +23,9 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
      * 今日の研究時間を登録する
      *
      * @param float $researchTime
-     * @return void
+     * @return bool
      */
-    public function storeResearchTime(float $researchTime): void
+    public function storeResearchTime(float $researchTime): bool
     {
         $userId = Auth::id();
         $createdDailyTime = $this->dailyTime->create([
@@ -33,7 +33,7 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
             'user_id' => $userId,
             'research_time' => $researchTime,
         ]);
-        User::find($userId)->fill(['daily_time_id' => $createdDailyTime->id])->save();
+        return User::find($userId)->fill(['daily_time_id' => $createdDailyTime->id])->save();
     }
 
     /**
@@ -53,9 +53,9 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
      * 今日の休憩時間を登録する
      *
      * @param float $restTime
-     * @return void
+     * @return bool
      */
-    public function storeRestTime(float $restTime): void
+    public function storeRestTime(float $restTime): bool
     {
         $userId = Auth::id();
         $createdDailyTime = $this->dailyTime->create([
@@ -63,7 +63,7 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
             'user_id' => $userId,
             'rest_time' => $restTime,
         ]);
-        User::find($userId)->fill(['daily_time_id' => $createdDailyTime->id])->save();
+        return User::find($userId)->fill(['daily_time_id' => $createdDailyTime->id])->save();
     }
 
     /**
@@ -85,22 +85,22 @@ class DailyTimeRepository implements DailyTimeRepositoryInterface
      * @param float $researchTime
      * @param float $restTime
      * @param DailyTime $dailyTime
-     * @return void
+     * @return bool
      */
-    public function updateDailyTime(float $researchTime, float $restTime, DailyTime $dailyTime)
+    public function updateDailyTime(float $researchTime, float $restTime, DailyTime $dailyTime): bool
     {
-        $dailyTime->fill(['research_time' => $researchTime, 'rest_time' => $restTime])->save();
+        return $dailyTime->fill(['research_time' => $researchTime, 'rest_time' => $restTime])->save();
     }
 
     /**
      * 任意の日にちの研究・休憩時間を削除(実際に削除するわけではない)
      *
      * @param DailyTime $dailyTime
-     * @return void
+     * @return bool
      */
-    public function destroyDailyTime(DailyTime $dailyTime)
+    public function destroyDailyTime(DailyTime $dailyTime): bool
     {
-        $dailyTime->delete();
+        return $dailyTime->delete();
     }
 
     /**

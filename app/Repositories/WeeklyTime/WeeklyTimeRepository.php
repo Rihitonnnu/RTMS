@@ -22,16 +22,16 @@ class WeeklyTimeRepository implements WeeklyTimeRepositoryInterface
      * 週間研究時間を登録する
      *
      * @param float $researchTime
-     * @return void
+     * @return bool
      */
-    public function storeResearchTime(float $researchTime): void
+    public function storeResearchTime(float $researchTime): bool
     {
         $userId = Auth::id();
         $createdweeklyTime = $this->weeklyTime->create([
             'user_id' => $userId,
             'research_time' => $researchTime,
         ]);
-        User::find($userId)->fill(['weekly_time_id' => $createdweeklyTime->id])->save();
+        return User::find($userId)->fill(['weekly_time_id' => $createdweeklyTime->id])->save();
     }
 
     /**
@@ -51,16 +51,16 @@ class WeeklyTimeRepository implements WeeklyTimeRepositoryInterface
      * 週間休憩時間を登録する
      *
      * @param float $restTime
-     * @return void
+     * @return bool
      */
-    public function storeRestTime(float $restTime): void
+    public function storeRestTime(float $restTime): bool
     {
         $userId = Auth::id();
         $createdweeklyTime = $this->weeklyTime->create([
             'user_id' => $userId,
             'rest_time' => $restTime,
         ]);
-        User::find($userId)->fill(['weekly_time_id' => $createdweeklyTime->id])->save();
+        return User::find($userId)->fill(['weekly_time_id' => $createdweeklyTime->id])->save();
     }
 
     /**
